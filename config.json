@@ -1,7 +1,7 @@
 {
     "secret":"AccessTokenSecret1803",
     "refreshTokenSecret":"RefrehsAccessTokenSecret1803",
-    "tokenLife":900,
+    "tokenLife":60,
     "refreshTokenLife":86400
 }
 

@@ -1,4 +1,5 @@
-//https://www.youtube.com/watch?v=oykl1Ih9pMg  -- Deployment f NodeJs application in ubuntu OS
+// What is the diffrence between GET and POST methods ??
+//https://www.youtube.com/watch?v=oykl1Ih9pMg  -- Deployment of NodeJs application in ubuntu OS
 // How to define acess control policy in node js server
 //https://rapidapi.com/blog/react-api-authentication-authorization/
 //https://material-ui.com/components/data-grid/filtering/
@@ -8,15 +9,37 @@
 
 const express = require("express");
 const jwt = require("jsonwebtoken");
-//var bodyParser = require("body-parser");
+var bodyParser = require("body-parser");
 const app = express();
 const config = require("./config.json");
+const { verifyToken } = require("./tokenChecker.js");
 var cors = require("cors");
 const port = 8000;
 const tokenList = {};
 
 app.use(cors());
-app.use(express.json());
+app.use(bodyParser.json({ extended: true }));
+
+app.use(function (req, res, next) {
+  const excludeurl = ["/login/", "/token/"];
+  let data = verifyToken(req, res);
+
+  const { path } = req;
+
+  // console.log(path);
+  // console.log(!excludeurl.includes(path));
+
+  if (!data.ddata && !excludeurl.includes(path)) {
+    let rmsg = {};
+    //console.log(data.message);
+    rmsg["Message"] = data.message;
+    rmsg["IsSuccess"] = false;
+    rmsg["code"] = `JWTExpired`;
+    res.send(rmsg);
+  } else {
+    next();
+  }
+});
 
 app.get("/", (req, res) => {
   res.send({ loginStatus: true });
@@ -26,8 +49,8 @@ app.get("/loginStatus2", (req, res) => {
   res.send({ loginStatus: false });
 });
 
-app.post("/login", (req, res) => {
-  const postData = req.body;
+app.post("/login/*", (req, res) => {
+  //const postData = req.body;
 
   const user = {
     email: req.body.email,
@@ -46,6 +69,28 @@ app.post("/login", (req, res) => {
   };
   tokenList[refreshtoken] = response;
   res.status(200).json(response);
+});
+
+app.post("/token/*", (req, res) => {
+  const postData = req.body;
+  //console.log("hi token");
+  if (postData.refreshToken && postData.refreshToken in tokenList) {
+    const user = {
+      email: postData.email,
+      name: postData.name,
+    };
+
+    const token = jwt.sign(user, config.secret, {
+      expiresIn: config.tokenLife,
+    });
+
+    const response = { token: token };
+    tokenList[postData.refreshToken].token = token;
+
+    res.status(200).json(response);
+  } else {
+    res.status(404).send("Invalid request");
+  }
 });
 
 app.get("/SQLConnection", (req, res) => {
