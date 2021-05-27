@@ -45,6 +45,58 @@ app.get("/", (req, res) => {
   res.send({ loginStatus: true });
 });
 
+app.get("/grammarVideos", (req, res) => {
+  res.send([
+    "EnglishGrammar.jpg",
+    "EnglishGrammar.jpg",
+    "EnglishGrammar.jpg",
+    "EnglishGrammar.jpg",
+    "EnglishGrammar.jpg",
+    "EnglishGrammar.jpg",
+    "EnglishGrammar.jpg",
+    "EnglishGrammar.jpg",
+  ]);
+});
+
+app.get("/ieltsEssays", (req, res) => {
+  res.send([
+    "IELTSEssay.jpg",
+    "IELTSEssay.jpg",
+    "IELTSEssay.jpg",
+    "IELTSEssay.jpg",
+    "IELTSEssay.jpg",
+    "IELTSEssay.jpg",
+    "IELTSEssay.jpg",
+    "IELTSEssay.jpg",
+  ]);
+});
+
+app.get("/ieltsSpeaking", (req, res) => {
+  res.send([
+    "IELTSSpeaking.png",
+    "IELTSSpeaking.png",
+    "IELTSSpeaking.png",
+    "IELTSSpeaking.png",
+    "IELTSSpeaking.png",
+    "IELTSSpeaking.png",
+    "IELTSSpeaking.png",
+    "IELTSSpeaking.png",
+  ]);
+});
+
+app.get("/ieltsVocabulary", (req, res) => {
+  res.send([
+    "English Vocabulary_02012021.PNG",
+    "English Vocabulary_02012021.PNG",
+    "English Vocabulary_02012021.PNG",
+    "English Vocabulary_02012021.PNG",
+    "English Vocabulary_02012021.PNG",
+    "English Vocabulary_02012021.PNG",
+    "English Vocabulary_02012021.PNG",
+    "English Vocabulary_02012021.PNG",
+  ]);
+});
+
 app.get("/loginStatus2", (req, res) => {
   res.send({ loginStatus: false });
 });
