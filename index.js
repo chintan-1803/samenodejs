@@ -105,8 +105,8 @@ app.post("/login/*", (req, res) => {
   //const postData = req.body;
 
   const user = {
-    email: req.body.email,
-    name: req.body.name,
+    username: req.body.username,
+    password: req.body.password,
   };
 
   const token = jwt.sign(user, config.secret, { expiresIn: config.tokenLife });
